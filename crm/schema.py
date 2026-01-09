@@ -119,6 +119,50 @@ class createProduct(graphene.Mutation):
         )
 
         return createProduct(product=product)
+    
+
+# Create Order
+
+class createOrder(graphene.Mutation):
+    order=graphene.Field(OrderType)
+
+    class Arguments:
+        customer_id=graphene.ID(required=True)
+        product_ids=graphene.List(graphene.ID, required=True)
+        order_date=graphene.DateTime()
+
+    
+    def mutate(self, info, customer_id, product_ids, order_date=None):
+        if not product_ids:
+            raise Exception("At least one product must be included in the order")
+        
+        try:
+            customer=Customer.objects.get(id=customer_id)
+        
+        except Customer.DoesNotExist:
+            raise Exception("Invalid customer ID")
+        
+
+        products = Product.objects.filter(id_in=product_ids)
+        
+        if products.count() != len(product_ids):
+             raise Exception("invalid product ID")
+
+        total = sum([p.price for p in products])
+
+        order = Order.objects.create(
+            customer=customer,
+            total_amount=total,
+            order_date=order_date or timezone.now()
+        )
+
+        order.products.set(products)
+        return createOrder(order=order)
         
 
 
+class Mutations(graphene.ObjecType):
+    create_customer=createCustomer.Field()
+    bulk_create_customers= BulkCreateCustomers.Field()
+    create_product=createProduct.Field()
+    create_order=createOrder.Field()

@@ -96,25 +96,29 @@ class BulkCreateCustomers(graphene.Mutation):
     
 
 
-    class createProduct(graphene.Mutation):
-        product=graphene.Field(ProductType)
+#create Product
+class createProduct(graphene.Mutation):
+    product=graphene.Field(ProductType)
 
-        class Arguments:
-            name = graphene.String(required=True)
-            price=graphene.Decimal(required=True)
-            stock=graphene.int()
+    class Arguments:
+        name = graphene.String(required=True)
+        price=graphene.Decimal(required=True)
+        stock=graphene.int()
 
-        def mutate(self, info, name, price, stock=0):
-            if price <=0:
-                raise Exception("Price must be positive")
+    def mutate(self, info, name, price, stock=0):
+        if price <=0:
+            raise Exception("Price must be positive")
             
-            if stock <0:
-                raise Exception("Stock cannot be negative")
+        if stock <0:
+            raise Exception("Stock cannot be negative")
             
-            product=Product.objects.create(
-                name=name,
-                price=price,
-                stock=stock
-            )
+        product=Product.objects.create(
+            name=name,
+            price=price,
+            stock=stock
+        )
 
-            return createProduct(product=product)
+        return createProduct(product=product)
+        
+
+

@@ -54,3 +54,42 @@ class createCustomer(graphene.Mutation):
             customer=customer, 
             message="Customer created successfully"
         )
+    
+
+
+#bulkcreateCustomers
+class BulkCustomerInput(graphene.InputObjectType):
+    name=graphene.String(required=True)
+    email=graphene.String(required=True)
+    phone=graphene.String()
+
+
+class BulkCreateCustomers(graphene.Mutation):
+    customers=graphene.List(CustomerType)
+    errors=graphene.List(graphene.String)
+
+    class Arguments:
+        input=graphene.List(BulkCustomerInput, required=True)
+
+    def mutate(self, info, input):
+        created=[]
+        errors=[]
+
+        with transaction.atomic():
+            for idx, daata in enumerate(input):
+                try:
+                    if customer.objects.filter(email=data.email).exists():
+                        raise Exception("Email already exists")
+                    
+                    customer=Customer.objects.create(
+                        name=data.name,
+                        email=data.email,
+                        phone=data.phone
+                    )
+
+                    created.append(customer)
+                
+                except Exception as e:
+                    errors.append(f"row {idx+1}: {str(e)}")
+
+        return BulkCreateCustomers(customers=created, errors=errors)

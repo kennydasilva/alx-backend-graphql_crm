@@ -35,3 +35,21 @@ class ProductFilter(django_filters.FilterSet):
 
 
 #order filter
+class orderFilter(django_filters.FilterSet):
+    total_amount_gte=django_filters.NumberFilter(field_name="total_amount", lookup_expr="gte")
+    total_amount_lte=django_filters.NumberFilter(field_name="total_amount", lookup_expr="lte")
+    order_date_gte=django_filters.DateTimeFilter(field_name="order_date", lookup_expr="gte")
+    order_date_lte=django_filters.DateTimeFilter(field_name="order_date", lookup_expr="lte")
+    Customer_name=django_filters.CharFilter(field_name="customer_name", lookup_expr="icontains")
+    product_name=django_filters.CharFilter(method="filter_by_product_name")
+    product_id=django_filters.NumberFilter(method="filter_by_product_id")
+
+    class Meta:
+        model=Order
+        fields=[]
+    
+    def filter_by_product_name(self, queryset, name, value):
+        return queryset.filter(products__name__icontains=value)
+    
+    def filter_by_product_id(self, queryset, name, value):
+        return queryset.filter(products__id=value)

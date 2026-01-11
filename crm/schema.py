@@ -5,6 +5,9 @@ from django.db import transaction
 from django.utils import timezone
 
 from .models import Customer, Product, Order
+from graphene_django.filter import DjangoFilterConnectionField
+from .filters import CustomerFilter, ProductFilter, OrderFilter
+
 
 
 
@@ -27,10 +30,15 @@ class OrderType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    all_customers = graphene.List(CustomerType)
-
-    def resolve_all_customers(root, info):
-        return Customer.objects.all()
+    all_customers = DjangoFilterConnectionField(
+        CustomerType, filterset_class=CustomerFilter
+    )
+    all_products = DjangoFilterConnectionField(
+        ProductType, filterset_class=ProductFilter
+    )
+    all_orders = DjangoFilterConnectionField(
+        OrderType, filterset_class=OrderFilter
+    )
 
 
 #inputs

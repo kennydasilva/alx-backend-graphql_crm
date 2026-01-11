@@ -19,4 +19,19 @@ class CustomerFilter(django_filters.FilterSet):
     
 
 #product filter
-#class ProductFilter(django_filters.FilterSet)
+class ProductFilter(django_filters.FilterSet):
+    name_icontains=django_filters.CharFilter(field_name="name", lookup_expr="icontains")
+    price_gte=django_filters.NumberFilter(field_name="price", lookup_expr="gte")
+    price_lte=django_filters.NumberFilter(field_name="price", lookup_expr="lte")
+    stock_gte=django_filters.NumberFilter(field_name="stock", lookup_expr="gte")
+    stock_lte=django_filters.NumberFilter(field_name="stock", lookup_expr="lte")
+
+
+    class Meta:
+        model=Product
+        fields=[]
+
+
+
+
+#order filter

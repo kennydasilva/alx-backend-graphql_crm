@@ -55,10 +55,10 @@ def query_graphql_hello():
         print(f"Failed to execute GraphQL hello query: {str(e)}")
 
 
-def update_low_stock():
+def updatelowstock():
     """
     Executes the UpdateLowStockProducts mutation via GraphQL endpoint.
-    Logs updated product names and new stock levels to /tmp/low_stock_updates_log.txt.
+    Logs updated product names and new stock levels to /tmp/lowstockupdates_log.txt.
     """
     # GraphQL endpoint URL
     graphql_url = "http://localhost:8000/graphql/"
@@ -84,7 +84,7 @@ def update_low_stock():
     }
     """)
     
-    log_file_path = "/tmp/low_stock_updates_log.txt"
+    log_file_path = "/tmp/lowstockupdates_log.txt"
     
     try:
         result = client.execute(mutation)

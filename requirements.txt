@@ -5,3 +5,6 @@ django-filter==24.1
 django-crontab==0.7.1
 gql==3.4.1
 requests==2.31.0
+celery
+django-celery-beat
+redis

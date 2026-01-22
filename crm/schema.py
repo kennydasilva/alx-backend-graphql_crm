@@ -30,6 +30,11 @@ class OrderType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
+    hello = graphene.String()
+    
+    def resolve_hello(self, info):
+        return "CRM API is alive"
+    
     all_customers = DjangoFilterConnectionField(
         CustomerType, filterset_class=CustomerFilter
     )

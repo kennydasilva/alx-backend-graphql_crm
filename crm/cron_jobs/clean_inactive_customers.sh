@@ -1,5 +1,5 @@
 #!/bin/bash
-Delete customers with no orders since one year ago and log the result
+#Delete customers with no orders since one year ago and log the result
 PROJECT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S')"
 

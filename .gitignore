@@ -1,2 +1,4 @@
 .venv/
 _pycache__/
+crm/__pycache__/
+alx_backend_graphql/__pycache__/

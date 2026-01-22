@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
-import requests
-from django.conf import settings
+from gql import gql, Client
+from gql.transport.requests import RequestsHTTPTransport
 
 def log_crm_heartbeat():
     """
@@ -32,21 +32,25 @@ def query_graphql_hello():
     """
     Queries the GraphQL hello field to verify the endpoint is responsive.
     """
-    from django.urls import reverse
-    from django.test import RequestFactory
-    from alx_backend_graphql.schema import schema
+    # GraphQL endpoint URL
+    graphql_url = "http://localhost:8000/graphql/"
     
-    query = """
+    # Create transport with requests
+    transport = RequestsHTTPTransport(url=graphql_url)
+    
+    # Create GraphQL client
+    client = Client(transport=transport, fetch_schema_from_transport=True)
+    
+    # Define query
+    query = gql("""
     query {
         hello
     }
-    """
+    """)
     
     try:
-        result = schema.execute(query)
-        if result.errors:
-            print(f"GraphQL errors: {result.errors}")
-        else:
-            print(f"GraphQL hello response: {result.data}")
+        result = client.execute(query)
+        print(f"GraphQL hello response: {result}")
     except Exception as e:
         print(f"Failed to execute GraphQL hello query: {str(e)}")
+

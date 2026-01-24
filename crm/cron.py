@@ -12,7 +12,7 @@ def log_crm_heartbeat():
     timestamp = datetime.now().strftime("%d/%m/%Y-%H:%M:%S")
     message = f"{timestamp} CRM is alive\n"
     
-    log_file_path = "/tmp/low_stock_updates_log.txt"
+    log_file_path = "/tmp/crm_heartbeat_log.txt"
 
     
     try:
